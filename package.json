@@ -23,6 +23,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@sveltejs/adapter-vercel": "^3.0.3",
 		"imagekit": "^4.1.3"
 	}
 }
