@@ -1,7 +1,8 @@
-<script>
+<script lang="ts">
   import "../app.css";
   import Listmenu from "$lib/components/Listmenu.svelte";
   import Search from "$lib/components/Search.svelte";
+
 </script>
 <div class="flex bg-slate-900 min-h-screen">
   <aside class="p-5 bg-slate-800/50 border border-r border-slate-700/50">
@@ -13,8 +14,9 @@
       </div>
       <nav>
         <ul class="mt-5 d:mt-10 pt-8 border-t border-slate-500/20">
-          <Listmenu icon="home.png" text="Home" />
-          <Listmenu icon="image.png" text="All Files" />
+          <Listmenu link="/" icon="home.png" text="Home"/>
+          <Listmenu link="/all" icon="image.png" text="All Files"/>
+          <Listmenu link="/upload" icon="cloud.png" text="Upload"/>
         </ul>
       </nav>
     </div>

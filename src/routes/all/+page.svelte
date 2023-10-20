@@ -6,7 +6,7 @@
 	export let data: PageData;
 
     const url = data.post.host;
-    const firstThreeItems = data.post.items.slice(0, 3);
+
     let message = '';
     let type = 'green';
     let visible = false;
@@ -37,9 +37,9 @@
 <div class="block md:hidden">
     <Search />
 </div>
-<span class="text-sm text-slate-300">Home</span>
-<article class="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-slate-700/40 pt-5">
-    {#each firstThreeItems as items, i}
+<span class="text-sm text-slate-300">Home &raquo; All Files</span>
+<article class="grid grid-cols-1 md:grid-cols-4 gap-4 border-t border-slate-700/40 pt-5">
+    {#each data.post.items as items}
         <section class="bg-slate-800 flex flex-col w-full rounded-md drop-shadow">
             <picture class="aspect-video relative mb-2">
                 <a href="#">
