@@ -1,27 +1,23 @@
 <script lang="ts">
   import { modal, toggleModal, objectTagStore } from "$lib/stores/modalStore";
+  let tags: string[] | null;
 
   let tagInput: string = "";
   $: visible = $modal;
-  $: tagValues = $objectTagStore.tagArray;
+  
+  $: {
+    if(visible && $objectTagStore.tagArray) {
+    tags = [...$objectTagStore.tagArray];
+  }
+  }
+
+
   const addTag = () => {
-    if (tagValues) {
-      if (
-        tagInput.trim() !== "" &&
-        !tagValues.includes(tagInput.toLowerCase())
-      ) {
-        // tags = [...tags, tagInput.toLowerCase()];
-
-        objectTagStore.update((storeData) => {
-          if (storeData.tagArray === null) {
-            storeData.tagArray = [];
-          }
-          storeData.tagArray.push(tagInput.toLowerCase());
-
-          return storeData;
-        });
-        tagInput = "";
-      }
+    if(tags) {
+      if (tagInput.trim() !== "" && !tags.includes(tagInput.toLowerCase())) {
+      tags = [...tags, tagInput.toLowerCase()];
+      tagInput = "";
+    }
     }
   };
 
@@ -33,26 +29,21 @@
   };
 
   const removeTag = (index: number) => {
-    // tags = tags.filter((_, i) => i !== index);
+    if (tags) {
+      tags = tags.filter((_, i) => i !== index);
+    }
     objectTagStore.update((storeData) => {
-      // Ensure the tagArray is an array (initialize it if it's null)
-      if (storeData.tagArray === null) {
-        storeData.tagArray = [];
+      const tagArray = storeData.tagArray ?? [];
+      if (index >= 0 && index < tagArray.length) {
+        storeData.tagArray = tagArray.filter((_, i) => i !== index);
       }
-
-      // Check if the index is valid
-      if (index >= 0 && index < storeData.tagArray.length) {
-        // Use the `filter` method to create a new array without the tag at the specified index
-        storeData.tagArray = storeData.tagArray.filter((_, i) => i !== index);
-      }
-
-      // Return the updated storeData
       return storeData;
     });
   };
 
   const cancelModal = () => {
     toggleModal();
+    tags = [];
     tagInput = "";
   };
 </script>
@@ -68,7 +59,6 @@
       >
       <form method="POST">
         <div class="my-4">
-          {$objectTagStore.tagArray}
           <input
             type="text"
             class="bg-white rounded-sm w-full py-2 px-3"
@@ -78,8 +68,8 @@
           />
         </div>
         <div class="flex gap-2">
-          {#if $objectTagStore.tagArray}
-            {#each $objectTagStore.tagArray as tag, index (tag)}
+          {#if tags}
+            {#each tags as tag, index (tag)}
               <div class="rounded-lg bg-slate-400 px-2 py-1">
                 {tag}
                 <button type="button" on:click={() => removeTag(index)}
@@ -88,13 +78,7 @@
               </div>
             {/each}
           {/if}
-          <!-- {#each tags as tag, index (tag)}
-            <div class="rounded-lg bg-slate-400 px-2 py-1">
-              {tag}
-              <button on:click={() => removeTag(index)}>x</button>
-            </div>
-          {/each} -->
-          <input type="hidden" name="tags" value={tagValues} />
+          <input type="hidden" name="tags" value={tags} />
           <input type="hidden" name="fileId" value={$objectTagStore.stringId} />
         </div>
         <div
