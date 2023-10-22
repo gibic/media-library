@@ -5,9 +5,18 @@ export const actions = {
   default: async ({ request }) => {
     const data = await request.formData();
     const fileId = data.get("fileId");
+    const tagsValue = data.get("tags");
+    let tagSent : string[] | null
+
+    if (tagsValue) {
+     tagSent = tagsValue.toString().split(',');
+    } else {
+      tagSent = null
+    }
+
     const raw = JSON.stringify({
-        "tags": [data.get("tags")]
-      });
+      tags: tagSent,
+    });
 
     const apiUrl = `${APIURL}/${fileId}/details`;
     const options = {
@@ -19,7 +28,6 @@ export const actions = {
       body: raw,
     };
 
-    console.log(fileId, options, apiUrl)
     try {
       const response = await fetch(apiUrl, options);
 
@@ -28,7 +36,7 @@ export const actions = {
       }
 
       const data = await response.json();
-      console.log("Data successfully fetched:", data);
+      console.log("Data successfully fetched:");
     } catch (error) {
       console.error("Fetch error:", error);
     }
