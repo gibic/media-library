@@ -15,7 +15,7 @@
   const openModal = () => {
     toggleModal();
     objectTagStore.set({
-      tagArray: null,
+      tagArray: fileTags,
       stringField: filePath,
       stringId: fileId,
     });

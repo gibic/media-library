@@ -4,15 +4,9 @@
   import ListPhotosItems from "$lib/components/ListPhotosItems.svelte";
   import Toast from "$lib/components/Toast.svelte";
   import TagAdd from "$lib/components/TagAdd.svelte";
-  import { goto } from "$app/navigation";
 
   export let data: PageData;
 
-  const preserveScroll = (url: string) => {
-    goto(url, {
-      noScroll: true,
-    });
-  };
   const url = data.post.host;
 
   let message = "";
@@ -35,9 +29,6 @@
     visible = false;
   }
 
-  const handleReload = () => {
-    preserveScroll('/all')
-  }
 </script>
 
 <h1 class="text-white md:text-8xl mb-8 max-w-xs font-bold">Media Library</h1>
@@ -63,4 +54,4 @@
 {#if visible}
   <Toast {message} />
 {/if}
-<TagAdd on:submitTag={handleReload} />
+<TagAdd />

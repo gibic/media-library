@@ -19,7 +19,6 @@ export const actions = {
       body: raw,
     };
 
-    console.log(fileId, options, apiUrl)
     try {
       const response = await fetch(apiUrl, options);
 
