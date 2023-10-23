@@ -1,3 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.pagination-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.pagination-nav svg path {
+    fill: rgb(203 213 225);
+}
+
+.pagination-nav .option.number.active {
+    color: rgb(77, 151, 221);
+}
+
+.pagination-nav .option {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
