@@ -1,6 +1,28 @@
-import type { Actions } from "./$types";
-import { APISECRET, APIURL } from "$env/static/private";
+import type { PageServerLoad, Actions } from "./$types";
+import { APIENDPOINT, APISECRET, APIURL } from "$env/static/private";
 
+export const load: PageServerLoad = async ({ fetch }) => {
+  const url = `${APIURL}?skip=0&limit=3&sort=DESC_CREATED`;
+  const options = {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      Authorization: `Basic ${APISECRET}`,
+    },
+  };
+
+  const response = await fetch(url, options);
+  const result = await response.json();
+
+  const url_image = APIENDPOINT;
+  return {
+    post: {
+      items: result,
+      host: url_image,
+    },
+  };
+
+}
 export const actions = {
   default: async ({ request }) => {
     const data = await request.formData();
@@ -36,7 +58,7 @@ export const actions = {
       }
 
       const data = await response.json();
-      console.log("Data successfully fetched:");
+      console.log("Data successfully fetched:", data);
     } catch (error) {
       console.error("Fetch error:", error);
     }
