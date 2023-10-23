@@ -4,15 +4,27 @@
   import ListPhotosItems from "$lib/components/ListPhotosItems.svelte";
   import Toast from "$lib/components/Toast.svelte";
   import TagAdd from "$lib/components/TagAdd.svelte";
-  import { paginate, LightPaginationNav } from "svelte-paginate";
+  import { paginate, PaginationNav } from "svelte-paginate";
   import type { ImageKitObject } from "$lib/utils/types";
+  import { browser } from '$app/environment';
 
   export let data: PageData;
 
   let items: ImageKitObject[] = data.post.items;
-  let currentPage = 1;
+
+  let currentPage = 1
+
+  if(browser) {
+    const localPage = window.localStorage.getItem('page');
+    if(localPage) currentPage = Number(localPage)
+  }
+
   let pageSize = 12;
   $: paginatedItems = paginate({ items, pageSize, currentPage });
+
+  $: if (browser) {
+     window.localStorage.setItem('page', JSON.stringify(currentPage));
+  }
 
   const url = data.post.host;
 
@@ -42,8 +54,8 @@
   <Search />
 </div>
 <span class="text-sm text-slate-300">Home &raquo; All Files</span>
-<section class="my-5 text-xs md:text-base">
-  <LightPaginationNav
+<section class="my-5 text-xs md:text-base text-slate-300">
+  <PaginationNav
     totalItems={items.length}
     {pageSize}
     {currentPage}
@@ -67,8 +79,8 @@
     />
   {/each}
 </article>
-<section class="my-5 text-xs md:text-base">
-  <LightPaginationNav
+<section class="my-5 text-xs md:text-base text-slate-300">
+  <PaginationNav
     totalItems={items.length}
     {pageSize}
     {currentPage}
