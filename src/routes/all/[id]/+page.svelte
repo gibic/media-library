@@ -10,15 +10,14 @@
 
   const url = data.post.host;
 
-  const lastItems = data.post.items.slice(0, 12);
-  const totalItems = data.post.items.length;
-
-  let totalPages = Math.ceil(totalItems / 12);
-  let currentPage = 1;
-
   let message = "";
   let type = "green";
   let visible = false;
+
+  const totalItems = data.post.totalItem;
+
+  let totalPages = Math.ceil(totalItems / 12);
+  let currentPage = data.post.currentPage;
 
   function handleToast() {
     showToast("Copied to clipboard!", "success");
@@ -42,13 +41,11 @@
 <div class="block md:hidden">
   <Search />
 </div>
-<span class="text-sm text-slate-300"
-  >Home &raquo; All Files ({totalItems} items)</span
->
+<span class="text-sm text-slate-300">Home &raquo; All Files</span>
 <article
   class="grid grid-cols-1 md:grid-cols-4 gap-4 border-t border-slate-700/40 pt-5"
 >
-  {#each lastItems as items}
+  {#each data.post.items as items}
     <ListPhotosItems
       thumbnail={items.thumbnail}
       fileName={items.name}
@@ -64,7 +61,6 @@
 totalPages={totalPages}
 currentPage= {currentPage}
 />
-
 {#if visible}
   <Toast {message} />
 {/if}

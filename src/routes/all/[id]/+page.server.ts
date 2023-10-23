@@ -1,8 +1,10 @@
 import type { PageServerLoad, Actions } from "./$types";
 import { APIENDPOINT, APISECRET, APIURL } from "$env/static/private";
 
-export const load: PageServerLoad = async ({ fetch }) => {
-  const url = `${APIURL}?sort=DESC_CREATED`;
+export const load: PageServerLoad = async ({ fetch, params }) => {
+  const total = `${APIURL}?sort=DESC_CREATED`;
+
+  const url = `${APIURL}?skip=${parseInt(params.id) * 12}&limit=12&sort=DESC_CREATED`;
   const options = {
     method: "GET",
     headers: {
@@ -10,6 +12,9 @@ export const load: PageServerLoad = async ({ fetch }) => {
       Authorization: `Basic ${APISECRET}`,
     },
   };
+
+  const responseTotal = await fetch(total, options);
+  const resultTotal = await responseTotal.json();
 
   const response = await fetch(url, options);
   const result = await response.json();
@@ -19,6 +24,8 @@ export const load: PageServerLoad = async ({ fetch }) => {
     post: {
       items: result,
       host: url_image,
+      currentPage: parseInt(params.id),
+      totalItem: parseInt(resultTotal.length)
     },
   };
 
