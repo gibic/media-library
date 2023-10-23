@@ -4,17 +4,17 @@
   import ListPhotosItems from "$lib/components/ListPhotosItems.svelte";
   import Toast from "$lib/components/Toast.svelte";
   import TagAdd from "$lib/components/TagAdd.svelte";
-  import Pagination from "$lib/components/Pagination.svelte";
+  import { paginate, LightPaginationNav } from "svelte-paginate";
+  import type { ImageKitObject } from "$lib/utils/types";
 
   export let data: PageData;
 
-  const url = data.post.host;
-
-  const lastItems = data.post.items.slice(0, 12);
-  const totalItems = data.post.items.length;
-
-  let totalPages = Math.ceil(totalItems / 12);
+  let items: ImageKitObject[] = data.post.items;
   let currentPage = 1;
+  let pageSize = 12;
+  $: paginatedItems = paginate({ items, pageSize, currentPage });
+
+  const url = data.post.host;
 
   let message = "";
   let type = "green";
@@ -35,20 +35,27 @@
   function hideToast() {
     visible = false;
   }
-
 </script>
 
 <h1 class="text-white md:text-8xl mb-8 max-w-xs font-bold">Media Library</h1>
 <div class="block md:hidden">
   <Search />
 </div>
-<span class="text-sm text-slate-300"
-  >Home &raquo; All Files ({totalItems} items)</span
->
+<span class="text-sm text-slate-300">Home &raquo; All Files</span>
+<section class="my-5 text-xs md:text-base">
+  <LightPaginationNav
+    totalItems={items.length}
+    {pageSize}
+    {currentPage}
+    limit={1}
+    showStepOptions={true}
+    on:setPage={(e) => (currentPage = e.detail.page)}
+  />
+</section>
 <article
   class="grid grid-cols-1 md:grid-cols-4 gap-4 border-t border-slate-700/40 pt-5"
 >
-  {#each lastItems as items}
+  {#each paginatedItems as items}
     <ListPhotosItems
       thumbnail={items.thumbnail}
       fileName={items.name}
@@ -60,11 +67,16 @@
     />
   {/each}
 </article>
-<Pagination 
-totalPages={totalPages}
-currentPage= {currentPage}
-/>
-
+<section class="my-5 text-xs md:text-base">
+  <LightPaginationNav
+    totalItems={items.length}
+    {pageSize}
+    {currentPage}
+    limit={1}
+    showStepOptions={true}
+    on:setPage={(e) => (currentPage = e.detail.page)}
+  />
+</section>
 {#if visible}
   <Toast {message} />
 {/if}
