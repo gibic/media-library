@@ -1,6 +1,6 @@
 <script lang="ts">
   import { modal, toggleModal, objectTagStore } from "$lib/stores/modalStore";
-  let tags: string[] | null;
+  let tags: string[] = [];
 
   let tagInput: string = "";
   $: visible = $modal;
@@ -11,13 +11,10 @@
   }
   }
 
-
   const addTag = () => {
-    if(tags) {
-      if (tagInput.trim() !== "" && !tags.includes(tagInput.toLowerCase())) {
-      tags = [...tags, tagInput.toLowerCase()];
-      tagInput = "";
-    }
+    if(tagInput.trim() !== "" && !tags.includes(tagInput.toLowerCase())) {
+        tags = [...tags, tagInput.toLowerCase()];
+        tagInput = "";
     }
   };
 
@@ -64,7 +61,7 @@
             class="bg-white rounded-sm w-full py-2 px-3"
             placeholder="tags 1, tags 2, tags 3..."
             bind:value={tagInput}
-            on:keydown={handleKeyDown}
+            on:keypress={handleKeyDown}
           />
         </div>
         <div class="flex gap-2">
