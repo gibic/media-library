@@ -1,6 +1,5 @@
 <script lang="ts">
   import "../app.css";
-  import type { PageData } from "./$types.js";
   import Listmenu from "$lib/components/Listmenu.svelte";
   import Search from "$lib/components/Search.svelte";
 </script>

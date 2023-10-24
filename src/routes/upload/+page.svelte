@@ -1,14 +1,8 @@
 <script lang="ts">
-  import { invalidateAll } from "$app/navigation";
-  import { signIn, signOut, initialize } from "svelte-google-auth/client";
-  import type { PageData } from "./$types.js";
   import Search from "$lib/components/Search.svelte";
   import { writable } from 'svelte/store';
 
   const imagePreview = writable('');
-
-  export let data: PageData;
-  initialize(data, invalidateAll);
 
   let named: string | undefined;
 
@@ -31,20 +25,10 @@
 </script>
 <div class="flex justify-between">
   <h1 class="text-white md:text-8xl mb-8 max-w-xs font-bold">Media Library</h1>
-  {#if data.auth.user}
-  <div class="hidden md:block">
-    <span class="text-slate-200">{data.auth.user.email}</span>
-    <button
-      on:click={() => signOut()}
-      class="bg-slate-600 text-slate-200 px-4 py-1">Sign Out</button
-    >
-  </div>
-  {/if}
 </div>
 <div class="block md:hidden">
   <Search />
 </div>
-{#if data.auth.user}
   <div class="block">
     <div class="mt-8 w-64 flex flex-col md:flex-row gap-12">
       <form
@@ -79,17 +63,4 @@
       {/if}
     </div>
   </div>
-{:else}
-  <div class="flex h-screen items-center">
-    <div>
-      <h1 class="text-slate-300 text-4xl mb-4">
-        You need to sign in to access this page
-      </h1>
-      <button
-        on:click={() => signIn()}
-        class="bg-slate-600 text-slate-200 px-4 py-1">Sign In</button
-      >
-    </div>
-  </div>
-{/if}
 
