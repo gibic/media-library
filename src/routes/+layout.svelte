@@ -4,7 +4,7 @@
   import { invalidateAll } from "$app/navigation";
   import Listmenu from "$lib/components/Listmenu.svelte";
   import Search from "$lib/components/Search.svelte";
-  import { signIn, signOut, initialize } from "svelte-google-auth/client";
+  import { signOut, initialize } from "svelte-google-auth/client";
   export let data: PageData;
 
   initialize(data, invalidateAll);
