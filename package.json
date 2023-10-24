@@ -25,6 +25,7 @@
 	"type": "module",
 	"dependencies": {
 		"@sveltejs/adapter-vercel": "^3.0.3",
-		"imagekit": "^4.1.3"
+		"imagekit": "^4.1.3",
+		"svelte-google-auth": "^0.7.2"
 	}
 }
