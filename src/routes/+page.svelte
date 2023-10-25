@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { PageData, ActionData } from "./$types";
+  import type { PageData } from "./$types";
 
   import Search from "$lib/components/Search.svelte";
   import ListPhotosItems from "$lib/components/ListPhotosItems.svelte";
