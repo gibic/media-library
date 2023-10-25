@@ -22,10 +22,6 @@
   let pageSize = 12;
   $: paginatedItems = paginate({ items, pageSize, currentPage });
 
-  $: if (browser) {
-     window.localStorage.setItem('page', JSON.stringify(currentPage));
-  }
-
   const url = data.post.host;
 
   let message = "";
