@@ -59,7 +59,7 @@
         <button class="bg-slate-700 rounded-full py-3 text-slate-300 disabled:bg-slate-800 disabled:text-slate-700" disabled={!named}>Upload</button>
       </form>
       {#if named}
-        <img src={$imagePreview} alt="preview" width="800">
+        <img src={$imagePreview} alt="preview thumbs" width="800">
       {/if}
     </div>
   </div>
